@@ -661,7 +661,7 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
               <div class="atc-dot atc-dot-crm">C</div>
               <div class="atc-info">
                 <div class="atc-info-label">CRM Synced — Opportunity Updated</div>
-                <div class="atc-info-detail">FY26 Renewal + Expansion → stage moved to Expansion · value updated to $180,800</div>
+                <div class="atc-info-detail">FY26 Renewal + Expansion → stage moved to Expansion · value updated to $180,200</div>
                 <span class="atc-info-chip atc-chip-green">✓ Updated</span>
               </div>
             </div>
@@ -847,6 +847,8 @@ function setState(stateKey){
   // Sign in label
   var sil=document.getElementById('store-signin-link');
   if(sil)sil.textContent=s.signinLabel;
+  // Reset cart on state change
+  resetSplitCart();
 }
 
 function renderCatalog(products){
@@ -926,6 +928,16 @@ function goToView(n){
   window.scrollTo({top:0,behavior:'instant'});
   window._svq=window._svq||[];
   window._svq.push(['_trackPageView']);
+}
+
+function resetSplitCart(){
+  splitCartItems={};splitCartTotal=0;
+  var area=document.getElementById('split-cart-area');
+  if(area)area.style.display='none';
+  var items=document.getElementById('split-cart-items');
+  if(items)items.innerHTML='';
+  var total=document.getElementById('split-cart-total');
+  if(total)total.textContent='$0.00';
 }
 
 // ── INIT ──────────────────────────────────────────
