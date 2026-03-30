@@ -289,6 +289,26 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
   .catalog-grid{grid-template-columns:1fr;}
   .pbar-right{gap:3px;}
 }
+
+/* ── SPLIT SCREEN ENHANCEMENTS ──────────────── */
+.split-sync-arrow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:50;display:none;pointer-events:none;}
+.split-sync-arrow.visible{display:block;}
+.ssa-inner{background:var(--hx-teal);color:#fff;font-size:11px;font-weight:700;padding:6px 12px;border-radius:20px;white-space:nowrap;animation:ssaPulse 0.8s ease-in-out infinite;}
+@keyframes ssaPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
+.split-label-update{animation:labelFlash .6s ease-in-out;}
+@keyframes labelFlash{0%,100%{background:var(--crm-blue)}50%{background:var(--hx-green)}}
+.order-processing-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(7,30,52,.85);align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.order-processing-overlay.active{display:flex;}
+.opo-spinner{width:40px;height:40px;border:3px solid rgba(10,110,138,.3);border-top-color:var(--hx-teal);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.opo-text{font-size:14px;font-weight:700;color:#fff;}
+.opo-sub{font-size:11px;color:rgba(255,255,255,.5);}
+/* View banner */
+.view-banner{background:#071e34;border-bottom:1px solid rgba(10,110,138,.2);padding:7px 0;}
+.vb-inner{max-width:var(--mw);margin:0 auto;padding:0 var(--g);display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.vb-step{background:#FA0F00;color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.5px;flex-shrink:0;}
+.vb-text{font-size:12px;color:rgba(255,255,255,.7);line-height:1.5;}
+.vb-hint{margin-left:auto;font-size:11px;color:var(--hx-teal-l);flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -410,7 +430,14 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
 
 <!-- ══ VIEW 2: SPLIT SCREEN CRM + COMMERCE ══ -->
 <div id="view-2" class="view">
-  <div class="split-layout">
+  <div class="view-banner">
+    <div class="vb-inner">
+      <span class="vb-step">Step 4 — Split screen</span>
+      <span class="vb-text">Left: Derek's CRM view — Wellness Depot account. Right: Linda's Commerce storefront, already personalized by Merkury. <strong style="color:#fff;">Add items to the cart — watch the CRM update in real time.</strong></span>
+      <span class="vb-hint">→ Then click Place Order to trigger the AJO alert</span>
+    </div>
+  </div>
+  <div class="split-layout" style="position:relative;"><div class="split-sync-arrow" id="split-arrow"><div class="ssa-inner">↔ CRM syncing live</div></div>
 
     <!-- LEFT: Mock CRM -->
     <div class="split-crm">
@@ -607,11 +634,7 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
       <div>
         <div class="ajo-trigger-card">
           <div class="atc-header">
-            <div class="atc-logo" style="background:none;padding:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="24" height="24" rx="4" fill="#FA0F00"/>
-  <path d="M12 4.5L19 19H14.5L12 14L9.5 19H5L12 4.5Z" fill="white"/>
-  <path d="M10.2 14.5H13.8" stroke="#6E4EDA" stroke-width="2"/>
-</svg></div>
+            <div class="atc-logo" style="background:none;padding:0;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="4" fill="#FA0F00"/><path d="M12 3.5L20.5 20.5H15.8L14.2 16.8H9.8L8.2 20.5H3.5L12 3.5ZM12 9.5L10.6 13.2H13.4L12 9.5Z" fill="white"/></svg></div>
             <div><div class="atc-name">Adobe Journey Optimizer B2B</div><div class="atc-sub">Order Threshold Trigger · Wellness Depot</div></div>
             <div class="atc-fired">Fired</div>
           </div>
@@ -687,6 +710,13 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
     </div>
   </div>
 </div><!-- /view-3 -->
+
+<!-- ORDER PROCESSING OVERLAY -->
+<div class="order-processing-overlay" id="order-overlay">
+  <div class="opo-spinner"></div>
+  <div class="opo-text">Processing order...</div>
+  <div class="opo-sub">Syncing with AEP · Evaluating AJO B2B threshold</div>
+</div>
 
 <script>
 (function(){var n=function(){};['log','warn','error','info','group','groupCollapsed','groupEnd','table'].forEach(function(m){if(typeof console==='undefined')window.console={};if(typeof console[m]!=='function')console[m]=n;});})();
@@ -882,6 +912,18 @@ function addToCart(name, price){
 
 // Split screen cart
 var splitCartItems={}, splitCartTotal=0;
+function showSplitSyncPulse(){
+  var arrow=document.getElementById('split-arrow');
+  if(!arrow)return;
+  arrow.classList.add('visible');
+  var lbl=document.querySelector('.split-label-crm');
+  if(lbl)lbl.classList.add('split-label-update');
+  setTimeout(function(){
+    arrow.classList.remove('visible');
+    if(lbl)lbl.classList.remove('split-label-update');
+  },1800);
+}
+
 function addToSplitCart(name,sku,price){
   if(splitCartItems[sku]){
     splitCartItems[sku].qty+=100;
@@ -890,6 +932,7 @@ function addToSplitCart(name,sku,price){
   }
   splitCartTotal=Object.values(splitCartItems).reduce(function(a,i){return a+i.price*i.qty;},0);
   renderSplitCart();
+  showSplitSyncPulse();
   addCRMEvent('commerce','Linda Cho added '+name+' to order','Just now · Commerce sync');
 }
 
@@ -919,7 +962,12 @@ function addCRMEvent(type,text,time){
 // ── ORDER FLOW ────────────────────────────────────
 function placeOrder(){
   document.getElementById('pbtn-order').classList.add('active');
-  goToView(3);
+  var overlay=document.getElementById('order-overlay');
+  if(overlay){ overlay.classList.add('active'); }
+  setTimeout(function(){
+    if(overlay)overlay.classList.remove('active');
+    goToView(3);
+  },1400);
 }
 
 // ── VIEW MANAGEMENT ───────────────────────────────
