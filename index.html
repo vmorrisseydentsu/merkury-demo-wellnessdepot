@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HelixHealth Commerce — Account-Based Selling Demo</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%230a4f6e%22/><text y=%22.9em%22 font-size=%2268%22 x=%2210%22 fill=%22white%22 font-weight=%22bold%22>H</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2212%22 fill=%22%231a5c3a%22/><text y=%22.9em%22 font-size=%2268%22 x=%2210%22 fill=%22white%22 font-weight=%22bold%22>W</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 
@@ -323,7 +323,7 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
     </div>
     <div class="pbar-right">
       <button class="pbar-btn pbar-anon active" id="pbtn-anon" onclick="setState('anon')">👤 Step 1 — Anonymous</button>
-      <button class="pbar-btn pbar-known" id="pbtn-known" onclick="setState('known')">🔍 Step 2 — Known (Merkury)</button>
+      <button class="pbar-btn pbar-known" id="pbtn-known" onclick="setState('known')">🔍 Step 2 — Merkury resolves Wellness Depot</button>
       <button class="pbar-btn pbar-auth" id="pbtn-auth" onclick="setState('auth')">✅ Step 3 — Authenticated</button>
       <button class="pbar-btn pbar-split" id="pbtn-split" onclick="goToView(2)">🖥️ Split Screen — CRM</button>
       <button class="pbar-btn pbar-order" id="pbtn-order" onclick="placeOrder()">🛒 Place Order → Alert</button>
@@ -433,7 +433,7 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
   <div class="view-banner">
     <div class="vb-inner">
       <span class="vb-step">Step 4 — Split screen</span>
-      <span class="vb-text">Left: Derek's CRM view — Wellness Depot account. Right: Linda's Commerce storefront, already personalized by Merkury. <strong style="color:#fff;">Add items to the cart — watch the CRM update in real time.</strong></span>
+      <span class="vb-text">Merkury resolved Wellness Depot before Linda logged in — her account, tier, and contract pricing are already surfaced. Left: Derek's live CRM. Right: the storefront Merkury personalized. <strong style="color:#fff;">Add items — watch the CRM sync in real time.</strong></span>
       <span class="vb-hint">→ Then click Place Order to trigger the AJO alert</span>
     </div>
   </div>
@@ -490,7 +490,7 @@ button{font-family:var(--font);cursor:pointer;border:0;background:none;}
     <div class="split-commerce">
       <div class="split-label split-label-commerce">
         <div class="split-label-dot split-label-dot-commerce"></div>
-        HelixHealth Commerce — Linda Cho, Wellness Depot · Merkury Resolved
+        HelixHealth Commerce — Wellness Depot · Merkury resolved · No login required
       </div>
       <div>
         <!-- Mini store nav -->
@@ -748,21 +748,21 @@ var STATES = {
   },
   known: {
     acctBarVisible: true,
-    acctBarBg: 'linear-gradient(90deg,rgba(0,194,184,.08),rgba(10,110,138,.05))',
+    acctBarBg: 'linear-gradient(90deg,rgba(0,194,184,.12),rgba(10,110,138,.08))',
     acctBarDotClass: 'acct-bar-dot-known',
-    acctBarText: 'Merkury resolved — Wellness Depot recognized',
-    acctBarTextColor: 'var(--hx-teal)',
-    acctBarSub: '· Contract pricing active',
+    acctBarText: 'Merkury resolved — Wellness Depot Pharmacy Chain recognized',
+    acctBarTextColor: 'var(--merkury-teal)',
+    acctBarSub: '· No login required · No form fill · Contract pricing active',
     acctBarSubColor: 'var(--hx-text2)',
-    acctBarChips: '<span class="acct-bar-chip" style="background:rgba(0,194,184,.1);color:var(--merkury-teal);border:1px solid rgba(0,194,184,.25);">No login required</span><span class="acct-bar-chip" style="background:#e8f8f2;color:var(--hx-green);border:1px solid rgba(13,158,110,.25);">Gold Tier Pricing</span>',
-    heroEyebrow: '👋 Welcome back, Wellness Depot',
+    acctBarChips: '<span class="acct-bar-chip" style="background:rgba(0,194,184,.15);color:var(--merkury-teal);border:1px solid rgba(0,194,184,.3);font-weight:700;">Merkury</span><span class="acct-bar-chip" style="background:rgba(0,194,184,.1);color:var(--merkury-teal);border:1px solid rgba(0,194,184,.25);">No login required</span><span class="acct-bar-chip" style="background:#e8f8f2;color:var(--hx-green);border:1px solid rgba(13,158,110,.25);">Gold Tier Pricing</span>',
+    heroEyebrow: '⚡ Merkury resolved — Wellness Depot recognized',
     heroEyebrowColor: 'var(--hx-teal)',
     heroH1: 'Your contract items are ready to order',
     heroH1Color: 'var(--hx-navy)',
-    heroSub: 'We recognized your network before you signed in. Your Gold Tier pricing and preferred SKUs are already applied.',
+    heroSub: 'Merkury identified Wellness Depot from your browsing session — no login, no form fill required. Your Gold Tier pricing and preferred SKUs are already applied.',
     heroSubColor: 'var(--hx-text2)',
     heroBtns: '<button class="btn-store-primary" onclick="return false;">Shop Contract Items</button><button class="btn-store-outline" onclick="return false;">View Account</button>',
-    heroCard: {label:'Your Contract Pricing', rows:[{item:'HelixCheck Metabolic Panel',price:'$142.00',color:'var(--hx-teal)'},{item:'HelixPack Daily Wellness',price:'$25.00',color:'var(--hx-teal)'},{item:'HelixPack Cognitive (trial)',price:'$48.00',color:'var(--commerce-orange)'}]},
+    heroCard: {label:'Merkury resolved · No login required', rows:[{item:'HelixCheck Metabolic Panel',price:'$142.00',color:'var(--hx-teal)'},{item:'HelixPack Daily Wellness',price:'$25.00',color:'var(--hx-teal)'},{item:'HelixPack Cognitive (trial)',price:'$48.00',color:'var(--commerce-orange)'}]},
     catalogTitle: 'Your Contract Items — Gold Tier Pricing',
     catalogSub: 'Personalized for Wellness Depot · 20% contract discount applied',
     products: [
